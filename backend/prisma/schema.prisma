@@ -1,0 +1,197 @@
+// Prisma Schema — Royal Car Travels
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum CarType {
+  SUV
+  Sedan
+  Hatchback
+  Luxury
+  MUV
+  Minivan
+}
+
+enum FuelType {
+  Petrol
+  Diesel
+  Electric
+  Hybrid
+  CNG
+}
+
+enum Transmission {
+  Manual
+  Automatic
+  AMT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum NotificationEvent {
+  BOOKING_CREATED
+  BOOKING_CONFIRMED
+  BOOKING_REJECTED
+  BOOKING_CANCELLED
+  REMINDER_24H
+  REMINDER_1H
+  MANUAL
+}
+
+enum NotificationStatus {
+  SENT
+  FAILED
+  PENDING
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model User {
+  id               String    @id @default(uuid()) @db.VarChar(36)
+  name             String
+  email            String    @unique
+  phone            String?   @db.VarChar(20)
+  password         String
+  role             Role      @default(USER)
+  isBlocked        Boolean   @default(false)
+  avatarUrl        String?   @db.VarChar(500)
+  licenseUrl       String?   @db.VarChar(500)
+  licenseVerified  Boolean   @default(false)
+  address          String?   @db.Text
+  bookings         Booking[]
+  notifications    Notification[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+model Car {
+  id           String       @id @default(uuid()) @db.VarChar(36)
+  name         String
+  type         CarType
+  fuel         FuelType     @default(Petrol)
+  transmission Transmission @default(Manual)
+  seating      Int          @default(5)
+  mileage      String?      @db.VarChar(50)   // e.g. "15 km/l"
+  pricePerDay  Float
+  pricePerHour Float?
+  images       Json         @default("[]")    // JSON array of image URLs
+  imageKey     String?      @db.VarChar(500)  // legacy / primary image key
+  availability Boolean      @default(true)
+  locationId   String       @db.VarChar(36)
+  location     Location     @relation(fields: [locationId], references: [id])
+  bookings     Booking[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([type])
+  @@index([fuel])
+  @@index([transmission])
+  @@index([availability])
+  @@index([locationId])
+}
+
+model Location {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  name      String
+  address   String
+  city      String   @default("")
+  cars      Car[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+}
+
+model Booking {
+  id            String        @id @default(uuid()) @db.VarChar(36)
+  userId        String        @db.VarChar(36)
+  carId         String        @db.VarChar(36)
+  startDate     DateTime
+  endDate       DateTime
+  totalAmount   Float
+  status        BookingStatus @default(PENDING)
+  userPhone     String?       @db.VarChar(20)   // snapshot at booking time
+  userEmail     String?       @db.VarChar(255)  // snapshot at booking time
+  notes         String?       @db.Text
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car           Car           @relation(fields: [carId], references: [id])
+  notifications Notification[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([carId, status])
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+}
+
+model Notification {
+  id        String              @id @default(uuid()) @db.VarChar(36)
+  userId    String?             @db.VarChar(36)
+  bookingId String?             @db.VarChar(36)
+  channel   NotificationChannel
+  event     NotificationEvent
+  status    NotificationStatus  @default(PENDING)
+  message   String              @db.Text
+  sentAt    DateTime?
+  user      User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking   Booking?            @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt DateTime            @default(now())
+
+  @@index([userId])
+  @@index([bookingId])
+  @@index([status])
+  @@index([event])
+}
+
+model Offer {
+  id                 String   @id @default(uuid()) @db.VarChar(36)
+  code               String   @unique
+  discountPercentage Float
+  validUntil         DateTime
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([code])
+}
+
+model Feedback {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  name      String
+  email     String
+  rating    Int
+  message   String   @db.Text
+  isApproved Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isApproved])
+}

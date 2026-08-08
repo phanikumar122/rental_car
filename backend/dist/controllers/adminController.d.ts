@@ -1,0 +1,11 @@
+import { Request, Response } from 'express';
+import { AuthRequest } from '../middleware/authMiddleware';
+export declare const getStats: (_req: AuthRequest, res: Response) => Promise<void>;
+export declare const getAllUsers: (req: Request, res: Response) => Promise<void>;
+export declare const blockUser: (req: Request, res: Response) => Promise<void>;
+export declare const unblockUser: (req: Request, res: Response) => Promise<void>;
+export declare const verifyLicense: (req: Request, res: Response) => Promise<void>;
+export declare const sendManualNotification: (req: Request, res: Response) => Promise<void>;
+export declare const getNotifications: (req: Request, res: Response) => Promise<void>;
+export declare const getUploadUrl: (req: Request, res: Response) => Promise<void>;
+export declare const uploadImage: (req: Request, res: Response) => Promise<void>;

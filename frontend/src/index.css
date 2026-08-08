@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #003366;
+  --color-primary-hover: #1e88e5;
+  --color-accent: #f5a030;
+  --color-background: #ffffff;
+  --color-surface: #f4f9fc;
+  --color-text-dark: #0a2a43;
+  --color-text-light: #4b5563;
+  --color-topbar: #649eb8;
+  --color-footer-bg: #9abfe2;
+  --color-footer-bottom: #669db6;
+  --color-subscribe-bg: #1c355e;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-hover: #1da851;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-gray-800 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-full font-semibold hover:bg-primary-hover transition-colors shadow-sm;
+  }
+  .btn-outline {
+    @apply border-2 border-primary text-primary px-6 py-2 rounded-full font-semibold hover:bg-primary hover:text-white transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300;
+  }
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
+  }
+}

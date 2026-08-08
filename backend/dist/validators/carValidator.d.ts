@@ -1,0 +1,78 @@
+import { z } from 'zod';
+export declare const createCarSchema: z.ZodObject<{
+    name: z.ZodString;
+    type: z.ZodEnum<["SUV", "Sedan", "Hatchback", "Luxury", "MUV", "Minivan"]>;
+    fuel: z.ZodOptional<z.ZodEnum<["Petrol", "Diesel", "Electric", "Hybrid", "CNG"]>>;
+    transmission: z.ZodOptional<z.ZodEnum<["Manual", "Automatic", "AMT"]>>;
+    seating: z.ZodOptional<z.ZodNumber>;
+    mileage: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    pricePerDay: z.ZodNumber;
+    pricePerHour: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    imageKey: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    images: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    locationId: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    type: "SUV" | "Sedan" | "Hatchback" | "Luxury" | "MUV" | "Minivan";
+    locationId: string;
+    pricePerDay: number;
+    fuel?: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "CNG" | undefined;
+    transmission?: "Manual" | "Automatic" | "AMT" | undefined;
+    seating?: number | undefined;
+    mileage?: string | null | undefined;
+    pricePerHour?: number | null | undefined;
+    images?: string[] | undefined;
+    imageKey?: string | null | undefined;
+}, {
+    name: string;
+    type: "SUV" | "Sedan" | "Hatchback" | "Luxury" | "MUV" | "Minivan";
+    locationId: string;
+    pricePerDay: number;
+    fuel?: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "CNG" | undefined;
+    transmission?: "Manual" | "Automatic" | "AMT" | undefined;
+    seating?: number | undefined;
+    mileage?: string | null | undefined;
+    pricePerHour?: number | null | undefined;
+    images?: string[] | undefined;
+    imageKey?: string | null | undefined;
+}>;
+export declare const updateCarSchema: z.ZodObject<{
+    name: z.ZodOptional<z.ZodString>;
+    type: z.ZodOptional<z.ZodEnum<["SUV", "Sedan", "Hatchback", "Luxury", "MUV", "Minivan"]>>;
+    fuel: z.ZodOptional<z.ZodEnum<["Petrol", "Diesel", "Electric", "Hybrid", "CNG"]>>;
+    transmission: z.ZodOptional<z.ZodEnum<["Manual", "Automatic", "AMT"]>>;
+    seating: z.ZodOptional<z.ZodNumber>;
+    mileage: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    pricePerDay: z.ZodOptional<z.ZodNumber>;
+    pricePerHour: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+    imageKey: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    images: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    availability: z.ZodOptional<z.ZodBoolean>;
+    locationId: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    name?: string | undefined;
+    type?: "SUV" | "Sedan" | "Hatchback" | "Luxury" | "MUV" | "Minivan" | undefined;
+    locationId?: string | undefined;
+    availability?: boolean | undefined;
+    pricePerDay?: number | undefined;
+    fuel?: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "CNG" | undefined;
+    transmission?: "Manual" | "Automatic" | "AMT" | undefined;
+    seating?: number | undefined;
+    mileage?: string | null | undefined;
+    pricePerHour?: number | null | undefined;
+    images?: string[] | undefined;
+    imageKey?: string | null | undefined;
+}, {
+    name?: string | undefined;
+    type?: "SUV" | "Sedan" | "Hatchback" | "Luxury" | "MUV" | "Minivan" | undefined;
+    locationId?: string | undefined;
+    availability?: boolean | undefined;
+    pricePerDay?: number | undefined;
+    fuel?: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "CNG" | undefined;
+    transmission?: "Manual" | "Automatic" | "AMT" | undefined;
+    seating?: number | undefined;
+    mileage?: string | null | undefined;
+    pricePerHour?: number | null | undefined;
+    images?: string[] | undefined;
+    imageKey?: string | null | undefined;
+}>;
